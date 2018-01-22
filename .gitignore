@@ -25,3 +25,6 @@ coverage
 
 # Benchmarking
 benchmarks/graphs
+
+# Misc
+roadmap.txt
