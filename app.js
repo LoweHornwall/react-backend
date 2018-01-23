@@ -1,5 +1,5 @@
 var express = require('express');
-var db = require("./db/db")
+var db = require("./db")
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');

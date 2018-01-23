@@ -12,6 +12,6 @@ router.get("/", function(req, res, next) {
   ]);
 });
 
-router.get("/new", questions_controller.question_list);
+router.post("/new", questions_controller.question_list);
 
 module.exports = router;

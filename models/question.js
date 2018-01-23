@@ -1,5 +1,5 @@
 const { Model } = require("objection");
-var db = require("../db/db");
+var db = require("../db");
 
 Model.knex(db);
 
@@ -19,7 +19,6 @@ class Question extends Model {
 
       properties: {
         id: {type: "integer"},
-        quiz_id: {type: "integer"},
         question_desc: {type: "string", minLength: 1, maxLength: 255},
         option_1: {type: "string", minLength: 1, maxLength: 255},
         option_2: {type: "string", minLength: 1, maxLength: 255},
@@ -29,8 +28,8 @@ class Question extends Model {
       }
     }
   }
-
-  static get relationalMappings() {
+/*
+  static get relationalMappings() { 
     const Quiz = require("./quiz");
 
     return {
@@ -44,6 +43,7 @@ class Question extends Model {
       }
     }
   }
+  */
 }
 
 module.exports = Question;
