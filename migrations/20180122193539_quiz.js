@@ -14,8 +14,8 @@ exports.up = function(knex, Promise) {
       table.string("option_1");
       table.string("option_2");
       table.string("option_3");
-      table.string("option_4");
       table.string("correct_answer");
+      table.integer("quiz_id").references("id").inTable("Quiz");
       table.timestamps();
     })
   ]);  

@@ -1,21 +1,14 @@
-const { Model } = require("objection");
-var db = require("../db");
+const BaseModel = require("./base_model")
 
-Model.knex(db);
-
-class Question extends Model {
+class Question extends BaseModel {
   static get tableName() {
     return "Question";
-  }
-
-  static testHi() {
-    return "hi!";
   }
 
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["question_desc", "option_1", "option_2", "option_3", "option_4", "correct_answer"],
+      required: ["question_desc", "option_1", "option_2", "option_3", "correct_answer", "quiz_id"],
 
       properties: {
         id: {type: "integer"},
@@ -23,18 +16,18 @@ class Question extends Model {
         option_1: {type: "string", minLength: 1, maxLength: 255},
         option_2: {type: "string", minLength: 1, maxLength: 255},
         option_3: {type: "string", minLength: 1, maxLength: 255},
-        option_4: {type: "string", minLength: 1, maxLength: 255},
-        correct_answer: {type: "string", minLength: 1, maxLength: 255}
+        correct_answer: {type: "string", minLength: 1, maxLength: 255},
+        quiz_id: {type: "integer"}
       }
     }
   }
-/*
+
   static get relationalMappings() { 
     const Quiz = require("./quiz");
 
     return {
       quiz: {
-        relation: Model.BelongsToOneRelation,
+        relation: BaseModel.BelongsToOneRelation,
         modelClass: Quiz,
         join: {
           from: "Question.quiz_id",
@@ -43,7 +36,6 @@ class Question extends Model {
       }
     }
   }
-  */
 }
 
 module.exports = Question;

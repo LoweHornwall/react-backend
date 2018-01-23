@@ -1,7 +1,7 @@
 const Question = require("../models/question");
 const objection = require("objection");
 
-exports.question_list = async function(req, res) {
+exports.question_create = async function(req, res) {
   const body = req.body;
 
   const new_question = await Question
@@ -11,15 +11,19 @@ exports.question_list = async function(req, res) {
       option_1: body.option_1,
       option_2: body.option_2,
       option_3: body.option_3,
-      option_4: body.option_4,
       correct_answer: body.correct_answer
     })
     .then((data) => {
-      res.json({response: data});
+      res.json({success: true, response: data});
     })
     .catch((err) => {
-      res.json({error: err});
+      res.json({success: false, error: err});
     });
+}
+
+exports.question_list = async function(req, res) {
+  const questions = await Question.query();
+  res.json({success: true, response: questions});
 }
 
 // ["question_desc", "option_1", "option_2", "option_3", "option_4", "correct_answer", "quiz_id"]
