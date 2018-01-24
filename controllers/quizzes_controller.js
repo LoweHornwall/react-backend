@@ -1,5 +1,4 @@
 const Quiz = require("../models/quiz");
-const objection = require("objection");
 const { transaction } = require("objection");
 
 exports.quiz_create = async function(req, res, next) {
@@ -20,11 +19,14 @@ exports.quiz_create = async function(req, res, next) {
 }
 
 exports.quiz_list = async function(req, res) {
-  const quizzes = await Quiz
+  const quiz = await Quiz
     .query()
-    .eager("questions");
+    .select("name", "category")
+    .count("Quiz.id")
+    .innerJoin("Question", "Quiz.id", "Question.quiz_id")
+    .groupBy("Quiz.id");
 
-  res.json({Sucess: true, quizzes});
+    res.json({Success: true, response: quiz});
 }
 
 /*
