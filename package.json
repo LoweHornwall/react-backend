@@ -5,7 +5,8 @@
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "server": "nodemon ./bin/www",
-    "client": "cd client && npm start"
+    "client": "cd client && npm start",
+    "test": "mocha"
   },
   "dependencies": {
     "body-parser": "~1.18.2",
@@ -20,7 +21,10 @@
     "serve-favicon": "~2.4.5"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
     "concurrently": "^3.5.1",
+    "mocha": "^5.0.0",
     "nodemon": "^1.14.11"
   }
 }

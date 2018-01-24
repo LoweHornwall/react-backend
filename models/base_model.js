@@ -1,8 +1,8 @@
 const { Model } = require("objection");
 const objection = require("objection");
-var db = require("../db");
+var knex = require("../db/knex");
 
-Model.knex(db);
+Model.knex(knex);
 
 class BaseModel extends Model {
   static get tableName() {
@@ -19,7 +19,7 @@ class BaseModel extends Model {
         }]
       });
     }      
-  
+
     this.created_at = new Date().toISOString();
   }
 

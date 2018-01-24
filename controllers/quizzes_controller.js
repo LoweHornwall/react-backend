@@ -8,26 +8,31 @@ exports.quiz_create = async function(req, res, next) {
       Quiz.query(trx)
         .allowInsert("[questions]")
         .insertGraph(graph)
-        .then((data) => {
+        .then(data => {
           res.json({Success: true, Response: data});
         })
-        .catch((err) => {
-          res.status(400).json({sucess: false, Error: err.data});
+        .catch(err => {
+          next(err);
         })
     );
   });
+  
 }
 
-exports.quiz_list = async function(req, res) {
+exports.quiz_list = async function(req, res, next) {
   const quiz = await Quiz
     .query()
-    .select("name", "category")
-    .count("Question.id")
-    .innerJoin("Question", "Quiz.id", "Question.quiz_id")
+    .select("name", "category", "Quiz.created_at")
+    .count("Question.id") 
+    .fullOuterJoin("Question", "Quiz.id", "Question.quiz_id")
     .groupBy("Quiz.id")
-    .orderBy("category");
-
-    res.json({Success: true, response: quiz});
+    .orderBy("category")
+    .then(data => {
+      res.json({Success: true, response: data});  
+    })
+    .catch(err => {
+      next(err);
+    });
 }
 
 /*
