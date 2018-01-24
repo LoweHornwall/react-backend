@@ -22,9 +22,10 @@ exports.quiz_list = async function(req, res) {
   const quiz = await Quiz
     .query()
     .select("name", "category")
-    .count("Quiz.id")
+    .count("Question.id")
     .innerJoin("Question", "Quiz.id", "Question.quiz_id")
-    .groupBy("Quiz.id");
+    .groupBy("Quiz.id")
+    .orderBy("category");
 
     res.json({Success: true, response: quiz});
 }
