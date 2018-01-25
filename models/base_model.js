@@ -10,6 +10,15 @@ class BaseModel extends Model {
   }
 
   $beforeInsert() {
+    this.validateNoIdInInsert();
+    this.created_at = new Date().toISOString();
+  }
+
+  $beforeUpdate() {
+    this.updated_at = new Date().toISOString(); 
+  }
+
+  validateNoIdInInsert() {
     if (this.id) {
       throw new objection.ValidationError({
         id: [{
@@ -18,13 +27,7 @@ class BaseModel extends Model {
           params: null
         }]
       });
-    }      
-
-    this.created_at = new Date().toISOString();
-  }
-
-  $beforeUpdate() {
-    this.updated_at = new Date().toISOString(); 
+    }        
   }
 }
 

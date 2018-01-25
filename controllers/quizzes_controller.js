@@ -1,25 +1,20 @@
 const Quiz = require("../models/quiz");
 const { transaction } = require("objection");
 
-exports.quiz_create = async function(req, res, next) {
+exports.quiz_create = async (req, res, next) => {
   const graph = req.body;
   const insertedGraph = await transaction(Quiz.knex(), trx => {
     return (
       Quiz.query(trx)
         .allowInsert("[questions]")
         .insertGraph(graph)
-        .then(data => {
-          res.json({Success: true, Response: data});
-        })
-        .catch(err => {
-          next(err);
-        })
+        .then(data => {res.json({Success: true, Response: data})})
+        .catch(next)  
     );
   });
-  
 }
 
-exports.quiz_list = async function(req, res, next) {
+exports.quiz_list = async (req, res, next) => {
   const quiz = await Quiz
     .query()
     .select("name", "category", "Quiz.created_at")
@@ -27,12 +22,8 @@ exports.quiz_list = async function(req, res, next) {
     .fullOuterJoin("Question", "Quiz.id", "Question.quiz_id")
     .groupBy("Quiz.id")
     .orderBy("category")
-    .then(data => {
-      res.json({Success: true, response: data});  
-    })
-    .catch(err => {
-      next(err);
-    });
+    .then(data => {res.json({Success: true, response: data})})
+    .catch(next);
 }
 
 /*
