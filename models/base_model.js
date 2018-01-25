@@ -10,25 +10,27 @@ class BaseModel extends Model {
   }
 
   $beforeInsert() {
-    this.validateNoIdInInsert();
+    this.validateNoId();
     this.created_at = new Date().toISOString();
   }
 
   $beforeUpdate() {
+    this.validateNoId();
     this.updated_at = new Date().toISOString(); 
   }
 
-  validateNoIdInInsert() {
+  validateNoId() {
     if (this.id) {
       throw new objection.ValidationError({
-        id: [{
+        id: {
           message: 'identifier should not be defined before insert',
           keyword: null,
           params: null
-        }]
+        }
       });
     }        
   }
+
 }
 
 module.exports = BaseModel;

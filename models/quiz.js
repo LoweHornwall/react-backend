@@ -1,6 +1,5 @@
 const BaseModel = require("./base_model");
 const objection = require("objection");
-const questionLimit = 3;
 
 class Quiz extends BaseModel {
   static get tableName() {
@@ -18,7 +17,7 @@ class Quiz extends BaseModel {
   $beforeUpdate() {
     super.$beforeUpdate();
     this.validateQuestionLimit();
-    
+
     var promises = [this.validateUniqueName()];
     return Promise.all(promises);
   }
@@ -53,13 +52,14 @@ class Quiz extends BaseModel {
   }
 
   validateQuestionLimit() {
+    const questionLimit = 3;
     if (this.questions.length > questionLimit) {
       throw new objection.ValidationError({
-        questions: [{
-          message: 'Quiz should not have more than 3 associated questions',
+        questions: {
+          message: "Quiz should not have more than " + questionLimit + " associated questions",
           keyword: null,
           params: null
-        }]
+        }
       });      
     }    
   }
@@ -68,11 +68,11 @@ class Quiz extends BaseModel {
     return this.constructor.query().select("name").where("name", this.name).first().then(row => {
       if (typeof row === "object" && row.name) {
         throw new objection.ValidationError({
-          name: [{
+          name: {
             message: "The name of the Quiz must be unique.",
             keyword: null,
             params: null
-          }]
+          }
         });
       }
     });

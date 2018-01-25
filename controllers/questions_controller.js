@@ -1,7 +1,7 @@
 const Question = require("../models/question");
 const objection = require("objection");
 
-exports.question_create = async function(req, res) {
+exports.question_create = async function(req, res, next) {
   const body = req.body;
 
   const new_question = await Question
@@ -16,9 +16,7 @@ exports.question_create = async function(req, res) {
     .then((data) => {
       res.json({success: true, response: data});
     })
-    .catch((err) => {
-      res.json({success: false, error: err});
-    });
+    .catch(next);
 }
 
 exports.question_list = async function(req, res) {

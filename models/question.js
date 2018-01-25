@@ -5,6 +5,10 @@ class Question extends BaseModel {
     return "Question";
   }
 
+  $beforeInsert() {
+    super.$beforeInsert();
+  }
+
   static get jsonSchema() {
     return {
       type: "object",

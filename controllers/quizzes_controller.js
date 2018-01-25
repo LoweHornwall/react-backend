@@ -15,13 +15,24 @@ exports.quiz_create = async (req, res, next) => {
 }
 
 exports.quiz_list = async (req, res, next) => {
-  const quiz = await Quiz
+  const quizzes = await Quiz
     .query()
     .select("name", "category", "Quiz.created_at")
     .count("Question.id") 
     .fullOuterJoin("Question", "Quiz.id", "Question.quiz_id")
     .groupBy("Quiz.id")
     .orderBy("category")
+    .page(req.params.page - 1, 2)
+    .then(data => {res.json({Success: true, response: data})})
+    .catch(next);
+}
+
+exports.quiz_show = async (req, res, next) => {
+  console.log(req.params.quiz_name);
+  const quiz = await Quiz
+    .query()
+    .where("name", "=", req.params.quiz_name)
+    .eager("questions")
     .then(data => {res.json({Success: true, response: data})})
     .catch(next);
 }

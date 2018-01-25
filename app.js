@@ -58,14 +58,14 @@ if (app.get("env") === "development") {
   app.use(function(err, req, res, next) {
     // render the error page
     res.status(err.status || err.statusCode || 500);
-    res.json({Success: false, message: JSON.parse(err.message), error: err});
+    res.json({Success: false, message: err.message, error: err});
   });
 }
 
 app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || err.statusCode || 500);
-  res.json({Success: false, message: JSON.parse(err.message), error: {}});
+  res.json({Success: false, message: err.message, error: {}});
 });
 
 module.exports = app;
