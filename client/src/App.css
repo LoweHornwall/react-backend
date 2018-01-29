@@ -1,18 +1,7 @@
-.AnswerOption {
-  background-color: grey;
-  border: none;
-  color: white;
-  width: 100px;
-  text-align: center;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
+.App {
+  margin-top: 15.px;
 }
 
-.GameArea {
-  margin:auto;
-  width:60%;
-  height:150px;
-  background-color: lightblue;
-  text-align: center;
+.App .navBar-brand {
+  font-weight: bold;
 }

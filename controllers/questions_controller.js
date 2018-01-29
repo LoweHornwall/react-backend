@@ -14,14 +14,14 @@ exports.question_create = async function(req, res, next) {
       correct_answer: body.correct_answer
     })
     .then((data) => {
-      res.json({success: true, response: data});
+      res.json({success: true, results: data});
     })
     .catch(next);
 }
 
 exports.question_list = async function(req, res) {
   const questions = await Question.query();
-  res.json({success: true, response: questions});
+  res.json({success: true, results: questions});
 }
 
 // ["question_desc", "option_1", "option_2", "option_3", "option_4", "correct_answer", "quiz_id"]

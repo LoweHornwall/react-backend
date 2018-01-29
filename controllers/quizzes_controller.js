@@ -4,26 +4,25 @@ const { transaction } = require("objection");
 exports.quiz_create = async (req, res, next) => {
   const graph = req.body;
   const insertedGraph = await transaction(Quiz.knex(), trx => {
-    return (
-      Quiz.query(trx)
-        .allowInsert("[questions]")
-        .insertGraph(graph)
-        .then(data => {res.json({Success: true, Response: data})})
-        .catch(next)  
-    );
-  });
+    const quiz = Quiz.query(trx)
+      .allowInsert("[questions]")
+      .insertGraph(graph)
+    return quiz;
+  })
+  .then(data => {res.json({Success: true, results: data})})
+  .catch(next)  
 }
 
 exports.quiz_list = async (req, res, next) => {
   const quizzes = await Quiz
     .query()
-    .select("name", "category", "Quiz.created_at")
+    .select("Quiz.id", "name", "category", "Quiz.created_at")
     .count("Question.id") 
     .fullOuterJoin("Question", "Quiz.id", "Question.quiz_id")
     .groupBy("Quiz.id")
-    .orderBy("category")
+    .orderBy("Quiz.created_at")
     .page(req.params.page - 1, 2)
-    .then(data => {res.json({Success: true, response: data})})
+    .then(data => {res.json({Success: true, results: data})})
     .catch(next);
 }
 
@@ -33,7 +32,7 @@ exports.quiz_show = async (req, res, next) => {
     .query()
     .where("name", "=", req.params.quiz_name)
     .eager("questions")
-    .then(data => {res.json({Success: true, response: data})})
+    .then(data => {res.json({Success: true, results: data})})
     .catch(next);
 }
 

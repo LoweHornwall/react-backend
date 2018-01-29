@@ -30,7 +30,7 @@ describe("Quizzes routes", () => {
           res.should.be.json;
           res.body.should.be.a("object");
           res.body.should.have.property("Success");
-          res.body.should.have.property("response");
+          res.body.should.have.property("results");
           res.body.response.results.length.should.equal(2);
           done();
        });
@@ -46,7 +46,7 @@ describe("Quizzes routes", () => {
           res.should.be.json;
           res.body.should.be.a("object");
           res.body.should.have.property("Success");
-          res.body.should.have.property("response");
+          res.body.should.have.property("result");
           res.body.response[0].name.should.equal("Games vol.2")
           done();
         })
