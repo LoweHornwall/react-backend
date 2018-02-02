@@ -20,20 +20,36 @@ exports.quiz_list = async (req, res, next) => {
     .count("Question.id") 
     .fullOuterJoin("Question", "Quiz.id", "Question.quiz_id")
     .groupBy("Quiz.id")
-    .orderBy("Quiz.created_at")
-    .page(req.params.page - 1, 2)
+    .orderBy("Quiz.created_at", "desc")
     .then(data => {res.json({Success: true, results: data})})
     .catch(next);
 }
 
 exports.quiz_show = async (req, res, next) => {
-  console.log(req.params.quiz_name);
   const quiz = await Quiz
     .query()
     .where("name", "=", req.params.quiz_name)
     .eager("questions")
     .then(data => {res.json({Success: true, results: data})})
     .catch(next);
+}
+
+exports.quiz_name_exists = async (req, res, next) => {
+  const name = req.query.name;
+  if (name) {
+    console.log(name)
+    const quiz = await Quiz
+      .query()
+      .where("name", "=", name)
+      .then(data => {
+        console.log(data);
+        let found = data.length !== 0 
+        res.json({Success: true, results: found});
+      })
+      .catch(next);
+  } else {
+    res.json({Success: false, results: "No 'name' query parameters was passed" });
+  }  
 }
 
 /*

@@ -1,30 +1,43 @@
-import React, { Component } from 'react';
-
+import React, { Component } from "react";
+import QuizForm from "./QuizForm";
+import { Link } from "react-router-dom";
 class QuizzesPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {quizzes: []};
-  } 
 
-  componentDidMount() {
-    fetch(this.props.location.pathname, {
-      accept: "application/json"
-    })
-    .then(data => data.json())
-    .then(jsonData => {
-      this.setState({quizzes: jsonData.results.results});
-    });
+    this.state = {
+      showForm: false
+    }
+
+    this.toggleForm = this.toggleForm.bind(this);
+  }
+
+  toggleForm() {
+    this.setState(prevState => ({
+      showForm: !prevState.showForm
+    }));
   }
 
   render() {
-    let quizzesList = null
-    if (this.state.quizzes !== null) {
-      quizzesList = this.state.quizzes.map(quiz => {
-        return <li key={quiz.id}>{quiz.name}</li>
+    let quizzesList = null;
+    if(this.props.results) {
+      quizzesList = this.props.results.map(quiz => {
+        let href = "quizzes/" + quiz.name;
+        return <li key={quiz.id}>
+          <Link to={href}>{quiz.name}</Link>
+          <b> category:</b> {quiz.category} 
+          <b> Questions #:</b> {quiz.count}
+          <b> created at:</b> {quiz.created_at}
+        </li>
       });
     }
+    let formArea = this.state.showForm? <QuizForm doFetch={this.props.doFetch}/> : 
+      <button onClick={this.toggleForm}>Create Quiz</button>
     return(
-      <ul>{quizzesList}</ul>
+      <div>
+      {quizzesList}
+      {formArea}
+      </div>
     )
   }
 }

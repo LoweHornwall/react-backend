@@ -24,7 +24,7 @@ describe("Quizzes routes", () => {
   describe("Get some quizzes", () => {
     it("should get some quizzes", done => {
       chai.request(server)
-        .get("/quizzes/page/1")
+        .get("/quizzes")
         .end(function(req, res) {
           res.should.have.status(200);
           res.should.be.json;

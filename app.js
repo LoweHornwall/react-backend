@@ -27,10 +27,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
-app.use('/questions', questions);
-app.use('/quizzes', quizzes);
+app.use('/api/', index);
+app.use('/api/users', users);
+app.use('/api/questions', questions);
+app.use('/api/quizzes', quizzes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -50,22 +50,23 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
 */
 
+var safeJsonParse = require("./helpers/safeJsonParse");
 // Adapted for Objection 
 if (app.get("env") === "development") {
   app.use(function(err, req, res, next) {
     // render the error page
+
     res.status(err.status || err.statusCode || 500);
-    res.json({Success: false, message: err.message, error: err});
+    res.json({Success: false, message: safeJsonParse(err.message), error: err});
   });
 }
 
 app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || err.statusCode || 500);
-  res.json({Success: false, message: err.message, error: {}});
+  res.json({Success: false, message: safeJsonParse(err.message), error: {}});
 });
 
 module.exports = app;
